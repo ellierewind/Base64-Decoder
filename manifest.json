@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Base64 Decoder",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Highlight Base64 text, right-click to decode in place. If it decodes to a URL, make it clickable.",
   "permissions": ["contextMenus", "activeTab", "notifications", "clipboardWrite", "tabs", "storage"],
   "background": {

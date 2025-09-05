@@ -3,29 +3,34 @@
 // Utilities to manage the context menu based on a stored setting
 const MENU_ID = "b64-decode";
 
-function createMenuIfMissing() {
-  try {
-    chrome.contextMenus.create({
+function createMenu(callback) {
+  chrome.contextMenus.create(
+    {
       id: MENU_ID,
       title: "Decode Base64 (replace selection / linkify)",
-      contexts: ["selection"]
-    });
-  } catch (e) {
-    // Ignore errors if it already exists
-  }
+      contexts: ["selection"],
+    },
+    () => {
+      // Ignore duplicate-id and other benign errors
+      void chrome.runtime.lastError;
+      if (callback) callback();
+    }
+  );
 }
 
-function removeMenuIfPresent() {
-  try {
-    chrome.contextMenus.remove(MENU_ID);
-  } catch (e) {
-    // Ignore errors if it doesn't exist
-  }
+function removeMenu(callback) {
+  chrome.contextMenus.remove(MENU_ID, () => {
+    // Ignore if it didn't exist
+    void chrome.runtime.lastError;
+    if (callback) callback();
+  });
 }
 
 function applyMenuFrom(enabled) {
-  if (enabled) createMenuIfMissing();
-  else removeMenuIfPresent();
+  // Normalize by removing first, then re-create if enabled
+  removeMenu(() => {
+    if (enabled) createMenu();
+  });
 }
 
 function ensureMenuFromStoredSetting() {
