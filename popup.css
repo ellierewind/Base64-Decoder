@@ -1,0 +1,192 @@
+:root {
+  --bg: #0b0c0e;
+  --surface: #111318;
+  --fg: #e9eef5;
+  --muted: #a8b2c1;
+  --border: #232731;
+  --primary: #8b5cf6; /* purple */
+  --primary-strong: #7c3aed; /* deeper purple */
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f6f8fb;
+    --surface: #ffffff;
+    --fg: #0e1420;
+    --muted: #566073;
+    --border: #e5e9f0;
+    --primary: #7c3aed; /* purple for light */
+    --primary-strong: #6d28d9;
+    --shadow: 0 10px 24px rgba(10, 25, 41, 0.08), 0 2px 8px rgba(10, 25, 41, 0.06);
+  }
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font: 13px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  color: var(--fg);
+  background: radial-gradient(1200px 400px at 0% -20%, rgba(139,92,246,0.12), transparent),
+              radial-gradient(1000px 400px at 120% 0%, rgba(124,58,237,0.12), transparent),
+              var(--bg);
+  min-width: 280px;
+  padding: 12px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 12px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+  background: linear-gradient(180deg, rgba(139,92,246,0.22), rgba(139,92,246,0.06));
+  border: 1px solid rgba(139,92,246,0.25);
+}
+
+h1 {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin: 0;
+}
+
+.subtitle {
+  margin: 2px 0 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--fg);
+  user-select: none;
+  transition: transform 60ms ease, background 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+}
+
+button.primary {
+  font-weight: 700;
+  background: linear-gradient(180deg, var(--primary), var(--primary-strong));
+  box-shadow: 0 6px 14px rgba(139, 92, 246, 0.22), inset 0 -1px 0 rgba(0,0,0,0.12);
+  color: #fff;
+}
+
+button:hover {
+  transform: translateY(-0.5px);
+}
+
+button.primary:hover {
+  filter: brightness(1.02);
+}
+
+button:active {
+  transform: translateY(0.5px);
+}
+
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.35);
+}
+
+#out {
+  margin-top: 10px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+.setting-label {
+  font-size: 12.5px;
+  color: var(--fg);
+}
+
+.switch {
+  --switch-w: 42px;
+  --switch-h: 24px;
+  --thumb: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--switch-w);
+  height: var(--switch-h);
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--switch-h) / 2 + 2px);
+  background: transparent;
+}
+
+.switch .track {
+  position: relative;
+  width: calc(var(--switch-w) - 8px);
+  height: calc(var(--switch-h) - 8px);
+  border-radius: calc(var(--switch-h) / 2);
+  background: #2a2e37;
+  transition: background 160ms ease;
+  display: inline-block;
+}
+
+@media (prefers-color-scheme: light) {
+  .switch .track { background: #e9eef6; }
+}
+
+.switch .thumb {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  width: var(--thumb);
+  height: var(--thumb);
+  border-radius: 999px;
+  background: #fff;
+  transform: translate(0, -50%);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.switch[aria-checked="true"] .track {
+  background: linear-gradient(180deg, var(--primary), var(--primary-strong));
+}
+
+.switch[aria-checked="true"] .thumb {
+  transform: translate(calc(100% + 6px), -50%);
+}

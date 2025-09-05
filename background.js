@@ -1,18 +1,65 @@
 // background.js (service worker)
 
-// Create ONE top-level context menu item on install/update
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.contextMenus.create({
-    id: "b64-decode",
-    title: "Decode Base64 (replace selection / linkify)",
-    contexts: ["selection"]
+// Utilities to manage the context menu based on a stored setting
+const MENU_ID = "b64-decode";
+
+function createMenuIfMissing() {
+  try {
+    chrome.contextMenus.create({
+      id: MENU_ID,
+      title: "Decode Base64 (replace selection / linkify)",
+      contexts: ["selection"]
+    });
+  } catch (e) {
+    // Ignore errors if it already exists
+  }
+}
+
+function removeMenuIfPresent() {
+  try {
+    chrome.contextMenus.remove(MENU_ID);
+  } catch (e) {
+    // Ignore errors if it doesn't exist
+  }
+}
+
+function applyMenuFrom(enabled) {
+  if (enabled) createMenuIfMissing();
+  else removeMenuIfPresent();
+}
+
+function ensureMenuFromStoredSetting() {
+  chrome.storage.sync.get({ contextMenuEnabled: false }, (items) => {
+    applyMenuFrom(Boolean(items.contextMenuEnabled));
   });
+}
+
+// On install/update: ensure default and apply state
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.get("contextMenuEnabled", (items) => {
+    if (items.contextMenuEnabled === undefined) {
+      chrome.storage.sync.set({ contextMenuEnabled: false }, ensureMenuFromStoredSetting);
+    } else {
+      ensureMenuFromStoredSetting();
+    }
+  });
+});
+
+// On startup, re-apply state (menus are usually persisted, but be safe)
+chrome.runtime.onStartup?.addListener(() => {
+  ensureMenuFromStoredSetting();
+});
+
+// React to setting changes from popup
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area !== "sync" || !changes.contextMenuEnabled) return;
+  applyMenuFrom(Boolean(changes.contextMenuEnabled.newValue));
 });
 
 // Handle one-click menu action
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (!tab || !tab.id) return;
-  if (info.menuItemId !== "b64-decode") return;
+  if (info.menuItemId !== MENU_ID) return;
 
   chrome.tabs.sendMessage(
     tab.id,

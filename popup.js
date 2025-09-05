@@ -1,6 +1,24 @@
+function initContextMenuToggle() {
+  const btn = document.getElementById("toggleContextMenu");
+  if (!btn) return;
+
+  // Initialize from storage (default: false)
+  chrome.storage.sync.get({ contextMenuEnabled: false }, (items) => {
+    const enabled = Boolean(items.contextMenuEnabled);
+    btn.setAttribute("aria-checked", String(enabled));
+  });
+
+  btn.addEventListener("click", () => {
+    const current = btn.getAttribute("aria-checked") === "true";
+    const next = !current;
+    btn.setAttribute("aria-checked", String(next));
+    chrome.storage.sync.set({ contextMenuEnabled: next });
+  });
+}
+
 document.getElementById("convertAll").addEventListener("click", async () => {
   const out = document.getElementById("out");
-  out.textContent = "Scanning…";
+  out.textContent = "Scanning.";
 
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -30,6 +48,9 @@ document.getElementById("convertAll").addEventListener("click", async () => {
       `;
     });
   } catch (e) {
-    out.textContent = "Error: " + (e && e.message || String(e));
+    out.textContent = "Error: " + ((e && e.message) || String(e));
   }
 });
+
+// Initialize UI pieces on load
+initContextMenuToggle();

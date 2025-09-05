@@ -3,17 +3,36 @@
   <head>
     <meta charset="utf-8" />
     <title>Base64 tools</title>
-    <style>
-      body { font: 13px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 12px; min-width: 260px; }
-      button { width: 100%; padding: 10px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; }
-      button:active { transform: translateY(1px); }
-      #out { margin-top: 10px; color: #333; }
-      .hint { color: #666; font-size: 12px; margin-top: 6px; }
-    </style>
+    <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <button id="convertAll">Convert all aHR* base64 on this page</button>
-    <div id="out" class="hint">Scans visible text nodes. Skips scripts, styles, inputs.</div>
+    <div class="card">
+      <div class="header">
+        <div class="logo" aria-hidden="true" title="Base64 Decoder">
+          <!-- Inline SVG icon to avoid external assets -->
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="3.5"></rect>
+            <path d="M7.5 9.5h9m-9 5h5"></path>
+            <path d="M12 6.5v11"></path>
+          </svg>
+        </div>
+        <div>
+          <h1>Base64 Tools</h1>
+          <p class="subtitle">Decode Base64 links on this page</p>
+        </div>
+      </div>
+
+      <button id="convertAll" class="primary">Decode Base64 links</button>
+      <div id="out" class="hint" role="status" aria-live="polite">Matches Base64 that decode to links (often start with "aHR"). Scans visible text nodes; skips scripts, styles, inputs.</div>
+
+      <div class="settings" id="settings">
+        <label class="setting-label" for="toggleContextMenu">Show context menu action</label>
+        <button id="toggleContextMenu" class="switch" role="switch" aria-checked="true" aria-label="Toggle context menu action">
+          <span class="track"><span class="thumb"></span></span>
+        </button>
+      </div>
+    </div>
+
     <script src="popup.js"></script>
   </body>
-</html>
+  </html>
