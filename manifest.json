@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Base64 Decoder",
+  "version": "1.0.0",
+  "description": "Highlight Base64 text, right-click to decode in place. If it decodes to a URL, make it clickable.",
+  "permissions": ["contextMenus", "activeTab", "notifications", "clipboardWrite", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_title": "Base64 tools",
+    "default_popup": "popup.html"
+  }
+}

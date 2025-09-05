@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Base64 tools</title>
+    <style>
+      body { font: 13px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 12px; min-width: 260px; }
+      button { width: 100%; padding: 10px; border: 1px solid #ccc; background: #fff; border-radius: 6px; cursor: pointer; }
+      button:active { transform: translateY(1px); }
+      #out { margin-top: 10px; color: #333; }
+      .hint { color: #666; font-size: 12px; margin-top: 6px; }
+    </style>
+  </head>
+  <body>
+    <button id="convertAll">Convert all aHR* base64 on this page</button>
+    <div id="out" class="hint">Scans visible text nodes. Skips scripts, styles, inputs.</div>
+    <script src="popup.js"></script>
+  </body>
+</html>
